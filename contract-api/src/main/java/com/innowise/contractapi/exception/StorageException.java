@@ -1,4 +1,4 @@
-package com.innowise.fileapi.exception;
+package com.innowise.contractapi.exception;
 
 public class StorageException extends RuntimeException {
 

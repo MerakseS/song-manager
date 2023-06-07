@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.innowise.fileapi.entity.Song;
+import com.innowise.contractapi.entity.Song;
 import com.innowise.fileapi.service.FileService;
 
 import lombok.RequiredArgsConstructor;

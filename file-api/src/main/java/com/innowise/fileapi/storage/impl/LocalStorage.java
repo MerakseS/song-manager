@@ -11,7 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.innowise.fileapi.exception.StorageException;
+import com.innowise.contractapi.exception.StorageException;
 import com.innowise.fileapi.storage.Storage;
 
 @Component

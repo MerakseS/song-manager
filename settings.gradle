@@ -1,3 +1,5 @@
 rootProject.name = 'song-manager'
 
+include 'contract-api'
 include 'file-api'
+include 'enricher-service'

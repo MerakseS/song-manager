@@ -1,0 +1,15 @@
+server:
+  port: 0
+
+spring:
+  cloud:
+    aws:
+      endpoint: ${AWS_ENDPOINT:http://localhost:4566}
+      region:
+        static: ${AWS_REGION:eu-west-1}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY:root}
+        secret-key: ${AWS_SECRET_KEY:root}
+
+enricher-service:
+  spotify-token: ${SPOTIFY_TOKEN}

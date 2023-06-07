@@ -1,4 +1,4 @@
-package com.innowise.fileapi.entity;
+package com.innowise.contractapi.entity;
 
 import org.springframework.core.io.Resource;
 import org.springframework.data.annotation.Transient;
