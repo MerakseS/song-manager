@@ -1,4 +1,4 @@
-package com.innowise.enricherservice.service.impl;
+package com.innowise.enricherservice.service;
 
 import java.util.ArrayList;
 
