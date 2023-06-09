@@ -18,6 +18,8 @@ public class SongMetadata {
 
     private String link;
 
+    private long duration;
+
     @DBRef
     private Album album;
 

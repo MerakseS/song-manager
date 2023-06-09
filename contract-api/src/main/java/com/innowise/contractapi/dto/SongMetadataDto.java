@@ -13,6 +13,8 @@ public class SongMetadataDto {
 
     private String link;
 
+    private long duration;
+
     private AlbumDto album;
 
     private List<ArtistDto> artists;

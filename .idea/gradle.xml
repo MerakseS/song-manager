@@ -9,7 +9,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/api-gateway" />
             <option value="$PROJECT_DIR$/contract-api" />
+            <option value="$PROJECT_DIR$/discovery-service" />
             <option value="$PROJECT_DIR$/enricher-service" />
             <option value="$PROJECT_DIR$/file-api" />
             <option value="$PROJECT_DIR$/song-api" />

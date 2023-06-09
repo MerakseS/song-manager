@@ -62,6 +62,7 @@ public class DefaultSpotifyService implements SpotifyService {
             SongMetadata songMetadata = new SongMetadata();
             songMetadata.setName(trackNode.get("name").asText());
             songMetadata.setLink(trackNode.at("/external_urls/spotify").asText());
+            songMetadata.setDuration(trackNode.get("duration_ms").asLong());
             songMetadata.setAlbum(parseAlbum(trackNode));
             songMetadata.setArtists(parseArtistList(trackNode));
 

@@ -23,7 +23,9 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign:$openfeignVersion"
 
     implementation "io.awspring.cloud:spring-cloud-aws-starter:$awsVersion"
     implementation "io.awspring.cloud:spring-cloud-aws-sqs:$awsVersion"
@@ -31,7 +33,6 @@ dependencies {
     implementation "org.apache.camel.springboot:camel-spring-boot-starter:$apacheCamelVersion"
     implementation "org.apache.camel.springboot:camel-aws2-sqs-starter:$apacheCamelVersion"
     implementation "org.apache.camel.springboot:camel-jackson-starter:$apacheCamelVersion"
-    implementation "org.springframework.cloud:spring-cloud-starter-openfeign:$openfeignVersion"
 
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"

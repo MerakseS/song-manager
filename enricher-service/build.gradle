@@ -22,7 +22,6 @@ dependencies {
     implementation project(path: ':contract-api')
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
     implementation "io.awspring.cloud:spring-cloud-aws-starter:$awsVersion"
@@ -35,6 +34,7 @@ dependencies {
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
