@@ -21,8 +21,8 @@ repositories {
 dependencies {
     implementation project(path: ':contract-api')
 
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
     implementation "io.awspring.cloud:spring-cloud-aws-starter:$awsVersion"
     implementation "io.awspring.cloud:spring-cloud-aws-sqs:$awsVersion"
@@ -30,10 +30,14 @@ dependencies {
     implementation "org.apache.camel.springboot:camel-spring-boot-starter:$apacheCamelVersion"
     implementation "org.apache.camel.springboot:camel-aws2-sqs-starter:$apacheCamelVersion"
     implementation "org.apache.camel.springboot:camel-jackson-starter:$apacheCamelVersion"
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign:$openfeignVersion"
 
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    compileOnly "org.mapstruct:mapstruct:$mapstructVersion"
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
 
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

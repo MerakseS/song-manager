@@ -43,4 +43,12 @@ public class LocalStorage implements Storage {
                 String.format("Can't load file from a local storage. File path: %s", filePath), e);
         }
     }
+
+    @Override
+    public void delete(String filePath) {
+        File file = new File(storagePath, filePath);
+        if (!file.delete()) {
+            throw new StorageException(String.format("Failed to delete file %s in local storage", filePath));
+        }
+    }
 }

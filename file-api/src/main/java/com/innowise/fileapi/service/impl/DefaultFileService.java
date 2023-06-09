@@ -10,11 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.innowise.contractapi.dto.SongTagsDto;
-import com.innowise.contractapi.entity.Song;
+import com.innowise.contractapi.entity.SongFile;
 import com.innowise.contractapi.entity.StorageType;
 import com.innowise.contractapi.exception.EntityNotFoundException;
 import com.innowise.contractapi.exception.ParseException;
-import com.innowise.fileapi.repository.SongRepository;
+import com.innowise.fileapi.repository.SongFileRepository;
 import com.innowise.fileapi.service.FileService;
 import com.innowise.fileapi.service.SqsService;
 import com.innowise.fileapi.storage.Storage;
@@ -38,47 +38,63 @@ public class DefaultFileService implements FileService {
     private final LocalStorage localStorage;
     private final AwsS3Storage awsS3Storage;
 
-    private final SongRepository songRepository;
+    private final SongFileRepository songFileRepository;
 
     @Override
     @Transactional
-    public Song save(MultipartFile file) {
-        Song song = new Song();
-        song.setFileName(file.getOriginalFilename());
-        song.setFilePath(UUID.randomUUID().toString());
+    public SongFile save(MultipartFile file) {
+        SongFile songFile = new SongFile();
+        songFile.setFileName(file.getOriginalFilename());
+        songFile.setFilePath(UUID.randomUUID().toString());
 
-        storeFile(file, song);
-        songRepository.save(song);
+        storeFile(file, songFile);
+        songFileRepository.save(songFile);
 
         SongTagsDto songTagsDto = parseMp3(file);
-        songTagsDto.setSongId(song.getId());
+        songTagsDto.setSongId(songFile.getId());
         sqsService.sendNewSong(songTagsDto);
 
-        log.info("Successfully saved file {} to {} storage", song.getFileName(), song.getStorageType());
-        return song;
+        log.info("Successfully saved file {} to {} storage", songFile.getFileName(), songFile.getStorageType());
+        return songFile;
     }
 
     @Override
-    public Song get(String id) {
-        Song song = songRepository.findById(id).orElseThrow(() ->
-            new EntityNotFoundException(String.format("Can't find song with id %s", id)));
+    public SongFile get(String id) {
+        SongFile songFile = getById(id);
 
-        Storage storage = getStorageByType(song.getStorageType());
-        song.setFile(storage.download(song.getFilePath()));
+        Storage storage = getStorageByType(songFile.getStorageType());
+        songFile.setFile(storage.download(songFile.getFilePath()));
 
         log.info("Successfully found song with id {}", id);
-        return song;
+        return songFile;
     }
 
-    private void storeFile(MultipartFile file, Song song) {
+    @Override
+    @Transactional
+    public void delete(String fileId) {
+        SongFile songFile = getById(fileId);
+
+        Storage storage = getStorageByType(songFile.getStorageType());
+        storage.delete(songFile.getFilePath());
+
+        songFileRepository.delete(songFile);
+        log.info("Successfully deleted song with id {}", fileId);
+    }
+
+    private SongFile getById(String id) {
+        return songFileRepository.findById(id).orElseThrow(() ->
+            new EntityNotFoundException(String.format("Can't find song with id %s", id)));
+    }
+
+    private void storeFile(MultipartFile file, SongFile songFile) {
         try {
-            awsS3Storage.upload(song.getFilePath(), file);
-            song.setStorageType(StorageType.S3);
+            awsS3Storage.upload(songFile.getFilePath(), file);
+            songFile.setStorageType(StorageType.S3);
         }
         catch (Exception e) {
             log.warn("Can't save to s3 storage. Storing to a local storage", e);
-            localStorage.upload(song.getFilePath(), file);
-            song.setStorageType(StorageType.LOCAL);
+            localStorage.upload(songFile.getFilePath(), file);
+            songFile.setStorageType(StorageType.LOCAL);
         }
     }
 

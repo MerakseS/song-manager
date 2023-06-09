@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Document("songs")
-public class Song {
+public class SongFile {
 
     @MongoId(FieldType.OBJECT_ID)
     private String id;

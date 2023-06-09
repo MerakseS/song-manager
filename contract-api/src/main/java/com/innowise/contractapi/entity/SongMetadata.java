@@ -2,6 +2,7 @@ package com.innowise.contractapi.entity;
 
 import java.util.List;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -17,7 +18,9 @@ public class SongMetadata {
 
     private String link;
 
+    @DBRef
     private Album album;
 
+    @DBRef
     private List<Artist> artists;
 }

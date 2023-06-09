@@ -2,11 +2,13 @@ package com.innowise.fileapi.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.innowise.contractapi.entity.Song;
+import com.innowise.contractapi.entity.SongFile;
 
 public interface FileService {
 
-    Song save(MultipartFile file);
+    SongFile save(MultipartFile file);
 
-    Song get(String fileId);
+    SongFile get(String fileId);
+
+    void delete(String fileId);
 }

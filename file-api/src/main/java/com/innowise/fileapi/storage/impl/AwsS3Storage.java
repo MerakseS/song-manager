@@ -45,13 +45,12 @@ public class AwsS3Storage implements Storage {
 
     @Override
     public Resource download(String filePath) {
-        try {
-            return s3Template.download(bucketName, filePath);
-        }
-        catch (Exception e) {
-            throw new StorageException(
-                String.format("Can't load file from s3 storage. File path: %s", filePath), e);
-        }
+        return s3Template.download(bucketName, filePath);
+    }
+
+    @Override
+    public void delete(String filePath) {
+        s3Template.deleteObject(bucketName, filePath);
     }
 
     private boolean isBucketExists(String bucketName) {

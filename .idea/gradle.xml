@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/contract-api" />
             <option value="$PROJECT_DIR$/enricher-service" />
             <option value="$PROJECT_DIR$/file-api" />
+            <option value="$PROJECT_DIR$/song-api" />
           </set>
         </option>
       </GradleProjectSettings>

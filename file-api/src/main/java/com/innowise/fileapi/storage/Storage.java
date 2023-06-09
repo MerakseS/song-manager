@@ -8,4 +8,6 @@ public interface Storage {
     void upload(String filePath, MultipartFile file);
 
     Resource download(String filePath);
+
+    void delete(String filePath);
 }
