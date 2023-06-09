@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.innowise.contractapi.dto.SongMetadataDto;
 import com.innowise.contractapi.entity.SongMetadata;
-import com.innowise.songapi.mapper.SongMetadataMapper;
+import com.innowise.contractapi.mapper.SongMetadataMapper;
 import com.innowise.songapi.service.SongMetadataService;
 
 import lombok.RequiredArgsConstructor;

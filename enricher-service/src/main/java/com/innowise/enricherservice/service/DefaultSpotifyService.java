@@ -9,12 +9,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.innowise.contractapi.dto.AlbumDto;
-import com.innowise.contractapi.dto.ArtistDto;
-import com.innowise.contractapi.dto.SongMetadataDto;
 import com.innowise.contractapi.dto.SongTagsDto;
+import com.innowise.contractapi.entity.Album;
+import com.innowise.contractapi.entity.Artist;
+import com.innowise.contractapi.entity.SongMetadata;
 import com.innowise.contractapi.exception.ParseException;
-import com.innowise.enricherservice.service.SpotifyService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,13 +31,13 @@ public class DefaultSpotifyService implements SpotifyService {
     private String spotifyToken;
 
     @Override
-    public SongMetadataDto getSongMetadata(SongTagsDto songTagsDto) {
+    public SongMetadata getSongMetadata(SongTagsDto songTagsDto) {
         String response = getSpotifyData(songTagsDto);
-        SongMetadataDto songMetadataDto = parseSongMetadata(response);
-        songMetadataDto.setId(songTagsDto.getSongId());
+        SongMetadata songMetadata = parseSongMetadata(response);
+        songMetadata.setId(songTagsDto.getSongId());
 
-        log.info("Successfully found song metadata: {}", songMetadataDto);
-        return songMetadataDto;
+        log.info("Successfully found song metadata: {}", songMetadata);
+        return songMetadata;
     }
 
     private String getSpotifyData(SongTagsDto songTagsDto) {
@@ -55,40 +54,40 @@ public class DefaultSpotifyService implements SpotifyService {
             .block();
     }
 
-    private SongMetadataDto parseSongMetadata(String json) {
+    private SongMetadata parseSongMetadata(String json) {
         try {
             JsonNode root = objectMapper.readTree(json);
             JsonNode trackNode = root.at("/tracks/items/0");
 
-            SongMetadataDto songMetadataDto = new SongMetadataDto();
-            songMetadataDto.setName(trackNode.get("name").asText());
-            songMetadataDto.setLink(trackNode.at("/external_urls/spotify").asText());
-            songMetadataDto.setAlbum(parseAlbum(trackNode));
-            songMetadataDto.setArtists(parseArtistList(trackNode));
+            SongMetadata songMetadata = new SongMetadata();
+            songMetadata.setName(trackNode.get("name").asText());
+            songMetadata.setLink(trackNode.at("/external_urls/spotify").asText());
+            songMetadata.setAlbum(parseAlbum(trackNode));
+            songMetadata.setArtists(parseArtistList(trackNode));
 
-            return songMetadataDto;
+            return songMetadata;
         }
         catch (JsonProcessingException e) {
             throw new ParseException(e);
         }
     }
 
-    private static AlbumDto parseAlbum(JsonNode trackNode) {
-        AlbumDto albumDto = new AlbumDto();
-        albumDto.setName(trackNode.at("/album/name").asText());
-        albumDto.setLink(trackNode.at("/album/external_urls/spotify").asText());
-        return albumDto;
+    private static Album parseAlbum(JsonNode trackNode) {
+        Album album = new Album();
+        album.setName(trackNode.at("/album/name").asText());
+        album.setLink(trackNode.at("/album/external_urls/spotify").asText());
+        return album;
     }
 
-    private static ArrayList<ArtistDto> parseArtistList(JsonNode trackNode) {
-        ArrayList<ArtistDto> artistDtoList = new ArrayList<>();
+    private static ArrayList<Artist> parseArtistList(JsonNode trackNode) {
+        ArrayList<Artist> artistList = new ArrayList<>();
         for (JsonNode artistNode : trackNode.get("artists")) {
-            ArtistDto artistDto = new ArtistDto();
-            artistDto.setName(artistNode.get("name").asText());
-            artistDto.setLink(artistNode.at("/external_urls/spotify").asText());
-            artistDtoList.add(artistDto);
+            Artist artist = new Artist();
+            artist.setName(artistNode.get("name").asText());
+            artist.setLink(artistNode.at("/external_urls/spotify").asText());
+            artistList.add(artist);
         }
 
-        return artistDtoList;
+        return artistList;
     }
 }

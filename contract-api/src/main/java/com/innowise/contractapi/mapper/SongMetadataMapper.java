@@ -1,4 +1,4 @@
-package com.innowise.songapi.mapper;
+package com.innowise.contractapi.mapper;
 
 import java.util.List;
 

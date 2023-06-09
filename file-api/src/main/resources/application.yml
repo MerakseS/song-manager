@@ -1,4 +1,9 @@
+server:
+  port: 0
+
 spring:
+  application:
+    name: file-api
   cloud:
     aws:
       endpoint: ${AWS_ENDPOINT:http://localhost:4566}
@@ -19,6 +24,13 @@ spring:
       username: ${MONGODB_USER:root}
       password: ${MONGODB_PASSWORD:root}
       database: ${MONGODB_DATABASE:song-db}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
 
 file-api:
   storage:

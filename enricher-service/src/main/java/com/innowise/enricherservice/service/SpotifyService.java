@@ -1,9 +1,9 @@
 package com.innowise.enricherservice.service;
 
-import com.innowise.contractapi.dto.SongMetadataDto;
 import com.innowise.contractapi.dto.SongTagsDto;
+import com.innowise.contractapi.entity.SongMetadata;
 
 public interface SpotifyService {
 
-    SongMetadataDto getSongMetadata(SongTagsDto songTagsDto);
+    SongMetadata getSongMetadata(SongTagsDto songTagsDto);
 }
