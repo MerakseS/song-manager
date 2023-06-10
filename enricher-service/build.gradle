@@ -22,6 +22,7 @@ dependencies {
     implementation project(path: ':contract-api')
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
     implementation "io.awspring.cloud:spring-cloud-aws-starter:$awsVersion"
@@ -30,6 +31,7 @@ dependencies {
     implementation "org.apache.camel.springboot:camel-spring-boot-starter:$apacheCamelVersion"
     implementation "org.apache.camel.springboot:camel-aws2-sqs-starter:$apacheCamelVersion"
     implementation "org.apache.camel.springboot:camel-jackson-starter:$apacheCamelVersion"
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"

@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class DefaultSqsService implements SqsService {
 
@@ -26,7 +25,6 @@ public class DefaultSqsService implements SqsService {
     public void sendNewSong(SongTagsDto songTagsDto) {
         try {
             sqsTemplate.send(QUEUE_NAME, objectMapper.writeValueAsString(songTagsDto));
-            log.info("Sent {} in queue {}", songTagsDto, QUEUE_NAME);
         }
         catch (JsonProcessingException e) {
             throw new ParseException(e);
