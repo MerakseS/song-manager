@@ -15,6 +15,12 @@ spring:
   data:
     mongodb:
       uri: mongodb://${MONGODB_USER:root}:${MONGODB_PASSWORD:root}@localhost:27018/song-metadata-db?authSource=admin
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
+          issuer-uri: http://localhost:9000
 
 eureka:
   client:
@@ -22,6 +28,3 @@ eureka:
       defaultZone: http://localhost:8761/eureka
   instance:
     instance-id: ${spring.application.name}:${random.value}
-
-file-api:
-  url: http://localhost:8080

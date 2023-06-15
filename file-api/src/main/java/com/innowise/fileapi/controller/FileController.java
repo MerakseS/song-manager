@@ -3,6 +3,7 @@ package com.innowise.fileapi.controller;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class FileController {
     private final static String DISPOSITION_FORMAT = "attachment; filename=\"%s\"";
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> uploadFile(@RequestPart("file") MultipartFile file) {
         SongFile songFile = fileService.save(file);
         return ResponseEntity.ok().body(songFile);
@@ -43,6 +45,7 @@ public class FileController {
     }
 
     @DeleteMapping("/{fileId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> deleteFile(@PathVariable("fileId") String fileId) {
         fileService.delete(fileId);
         return ResponseEntity.ok().build();

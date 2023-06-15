@@ -1,7 +1,6 @@
 package com.innowise.enricherservice.config;
 
 import org.apache.camel.CamelContext;
-import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.aws2.sqs.Sqs2Component;
 import org.apache.camel.spring.SpringCamelContext;
 import org.springframework.context.ApplicationContext;
@@ -38,10 +37,5 @@ public class CamelConfig {
         camelContext.addRoutes(sqsRouteBuilder);
 
         return camelContext;
-    }
-
-    @Bean
-    public ProducerTemplate producerTemplate(CamelContext camelContext) {
-        return camelContext.createProducerTemplate();
     }
 }

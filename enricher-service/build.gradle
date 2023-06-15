@@ -30,12 +30,13 @@ dependencies {
 
     implementation "org.apache.camel.springboot:camel-spring-boot-starter:$apacheCamelVersion"
     implementation "org.apache.camel.springboot:camel-aws2-sqs-starter:$apacheCamelVersion"
+    implementation "org.apache.camel.springboot:camel-http-starter:$apacheCamelVersion"
     implementation "org.apache.camel.springboot:camel-jackson-starter:$apacheCamelVersion"
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

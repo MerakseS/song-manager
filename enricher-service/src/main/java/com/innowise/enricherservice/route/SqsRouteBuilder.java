@@ -1,7 +1,7 @@
 package com.innowise.enricherservice.route;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.innowise.contractapi.dto.SongMetadataDto;
@@ -11,10 +11,8 @@ import com.innowise.contractapi.mapper.SongMetadataMapper;
 import com.innowise.enricherservice.service.SpotifyService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Service
-@Slf4j
+@Component
 @RequiredArgsConstructor
 public class SqsRouteBuilder extends RouteBuilder {
 

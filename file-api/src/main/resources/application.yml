@@ -4,6 +4,16 @@ server:
 spring:
   application:
     name: file-api
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
+          issuer-uri: http://localhost:9000
   cloud:
     aws:
       endpoint: ${AWS_ENDPOINT:http://localhost:4566}
@@ -14,10 +24,6 @@ spring:
         secret-key: ${AWS_SECRET_KEY:root}
       s3:
         path-style-access-enabled: on
-  servlet:
-    multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
   data:
     mongodb:
       authentication-database: admin

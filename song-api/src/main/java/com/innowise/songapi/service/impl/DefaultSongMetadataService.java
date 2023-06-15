@@ -54,10 +54,10 @@ public class DefaultSongMetadataService implements SongMetadataService {
 
     @Override
     @Transactional
-    public void delete(String id) {
+    public void delete(String id, String token) {
         SongMetadata songMetadata = getById(id);
+        fileApiClient.deleteSongFile(songMetadata.getId(), token);
         songMetadataRepository.deleteById(songMetadata.getId());
-        fileApiClient.deleteSongFile(songMetadata.getId());
         log.info("Successfully deleted song metadata with id {}", id);
     }
 

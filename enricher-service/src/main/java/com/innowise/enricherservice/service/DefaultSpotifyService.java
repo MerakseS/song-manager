@@ -1,5 +1,10 @@
 package com.innowise.enricherservice.service;
 
+import java.util.ArrayList;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,14 +13,9 @@ import com.innowise.contractapi.entity.Album;
 import com.innowise.contractapi.entity.Artist;
 import com.innowise.contractapi.entity.SongMetadata;
 import com.innowise.contractapi.exception.ParseException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.ArrayList;
 
 @Service
 @Slf4j

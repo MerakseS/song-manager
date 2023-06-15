@@ -12,5 +12,5 @@ public interface SongMetadataService {
 
     SongMetadata get(String id);
 
-    void delete(String id);
+    void delete(String id, String token);
 }
