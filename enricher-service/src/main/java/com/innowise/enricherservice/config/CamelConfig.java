@@ -1,5 +1,7 @@
 package com.innowise.enricherservice.config;
 
+import java.io.InputStream;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.component.aws2.sqs.Sqs2Component;
 import org.apache.camel.spring.SpringCamelContext;
@@ -7,6 +9,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.innowise.contractapi.entity.SongMetadata;
+import com.innowise.enricherservice.converter.SpotifyJsonConverter;
 import com.innowise.enricherservice.route.SqsRouteBuilder;
 
 import io.awspring.cloud.autoconfigure.core.AwsClientBuilderConfigurer;
@@ -24,11 +29,16 @@ public class CamelConfig {
 
     @Bean
     public CamelContext camelContext(ApplicationContext applicationContext,
-        SqsClient sqsClient, SqsRouteBuilder sqsRouteBuilder) throws Exception {
+        SqsClient sqsClient, SqsRouteBuilder sqsRouteBuilder,
+        ObjectMapper objectMapper) throws Exception {
 
         SpringCamelContext camelContext = new SpringCamelContext(applicationContext);
         camelContext.getRegistry().bind("client", sqsClient);
         camelContext.getGlobalOptions().put("CamelJacksonEnableTypeConverter", "true");
+
+        camelContext.getTypeConverterRegistry()
+            .addTypeConverter(SongMetadata.class, InputStream.class,
+                new SpotifyJsonConverter(objectMapper));
 
         Sqs2Component component = new Sqs2Component();
         component.setCamelContext(camelContext);

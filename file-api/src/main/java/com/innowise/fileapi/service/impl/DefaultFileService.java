@@ -49,12 +49,13 @@ public class DefaultFileService implements FileService {
 
         storeFile(file, songFile);
         songFileRepository.save(songFile);
+        log.info("Successfully saved file {} to {} storage", songFile.getFileName(), songFile.getStorageType());
 
         SongTagsDto songTagsDto = parseMp3(file);
         songTagsDto.setSongId(songFile.getId());
         sqsService.sendNewSong(songTagsDto);
+        log.info("Successfully sent tags of song with id {}", songTagsDto.getSongId());
 
-        log.info("Successfully saved file {} to {} storage", songFile.getFileName(), songFile.getStorageType());
         return songFile;
     }
 
@@ -64,8 +65,8 @@ public class DefaultFileService implements FileService {
 
         Storage storage = getStorageByType(songFile.getStorageType());
         songFile.setFile(storage.download(songFile.getFilePath()));
-
         log.info("Successfully found song with id {}", id);
+
         return songFile;
     }
 
@@ -92,7 +93,7 @@ public class DefaultFileService implements FileService {
             songFile.setStorageType(StorageType.S3);
         }
         catch (Exception e) {
-            log.warn("Can't save to s3 storage. Storing to a local storage", e);
+            log.warn("Can't save to s3 storage", e);
             localStorage.upload(songFile.getFilePath(), file);
             songFile.setStorageType(StorageType.LOCAL);
         }
