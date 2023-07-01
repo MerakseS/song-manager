@@ -52,6 +52,13 @@ public class SpotifyJsonConverter implements TypeConverter {
         }
     }
 
+    @Override
+    public <T> T convertTo(Class<T> type, Exchange exchange, Object value) throws TypeConversionException {
+        SongMetadata songMetadata = (SongMetadata) convertTo(type, value);
+        songMetadata.setId((String) exchange.getProperty("songId"));
+        return (T) songMetadata;
+    }
+
     private static Album parseAlbum(JsonNode trackNode) {
         Album album = new Album();
         album.setName(trackNode.at("/album/name").asText());
@@ -72,20 +79,13 @@ public class SpotifyJsonConverter implements TypeConverter {
     }
 
     @Override
-    public <T> T convertTo(Class<T> type, Exchange exchange, Object value) throws TypeConversionException {
-        SongMetadata songMetadata = (SongMetadata) convertTo(type, value);
-        songMetadata.setId((String) exchange.getProperty("songId"));
-        return (T) songMetadata;
-    }
-
-    @Override
     public <T> T mandatoryConvertTo(Class<T> type, Object value) throws TypeConversionException, NoTypeConversionAvailableException {
         return convertTo(type, value);
     }
 
     @Override
     public <T> T mandatoryConvertTo(Class<T> type, Exchange exchange, Object value) throws TypeConversionException, NoTypeConversionAvailableException {
-        return convertTo(type, value);
+        return convertTo(type, exchange, value);
     }
 
     @Override
@@ -95,6 +95,6 @@ public class SpotifyJsonConverter implements TypeConverter {
 
     @Override
     public <T> T tryConvertTo(Class<T> type, Exchange exchange, Object value) {
-        return convertTo(type, value);
+        return convertTo(type, exchange, value);
     }
 }

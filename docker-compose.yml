@@ -1,0 +1,162 @@
+version: '3.1'
+
+services:
+  discovery-service:
+    container_name: discovery-service
+    build:
+      context: ./discovery-service
+    image: discovery-service:latest
+    restart: always
+    environment:
+      - eureka.instance.hostname=discovery-service
+      - EUREKA_ENDPOINT
+    networks:
+      - song-manager-network
+    ports:
+      - '8761:8761'
+
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./api-gateway
+    image: api-gateway:latest
+    restart: always
+    environment:
+      - eureka.instance.hostname=discovery-service
+      - EUREKA_ENDPOINT
+    depends_on:
+      - discovery-service
+    networks:
+      - song-manager-network
+    ports:
+      - '8765:8765'
+
+  auth-api:
+    container_name: auth-api
+    build:
+      context: ./auth-api
+    image: auth-api:latest
+    environment:
+      - ISSUER_ENDPOINT
+      - EUREKA_ENDPOINT
+      - MONGODB_HOST=user-db
+    depends_on:
+      - user-db
+      - discovery-service
+    networks:
+      - song-manager-network
+      - auth-network
+    ports:
+      - '9000:9000'
+  user-db:
+    image: mongo:6.0.6
+    container_name: user-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    networks:
+      - auth-network
+    volumes:
+      - user-db-data:/var/lib/mongodb/data
+
+  file-api:
+    container_name: file-api
+    build: ./file-api
+    image: file-api:latest
+    environment:
+      - ISSUER_ENDPOINT
+      - AWS_ENDPOINT
+      - EUREKA_ENDPOINT
+      - MONGODB_HOST=resource-db
+    depends_on:
+      - resource-db
+      - localstack
+      - discovery-service
+    networks:
+      - song-manager-network
+      - file-network
+    volumes:
+      - local-files:/uploads
+  resource-db:
+    image: mongo:6.0.6
+    container_name: resource-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    networks:
+      - file-network
+    volumes:
+      - resource-db-data:/var/lib/mongodb/data
+
+  enricher-service:
+    container_name: enricher-service
+    build: ./enricher-service
+    image: enricher-service:latest
+    environment:
+      - AWS_ENDPOINT
+      - EUREKA_ENDPOINT
+      - SPOTIFY_CLIENT_ID
+      - SPOTIFY_CLIENT_SECRET
+    depends_on:
+      - localstack
+      - discovery-service
+    networks:
+      - song-manager-network
+
+  song-api:
+    container_name: song-api
+    build: ./song-api
+    image: song-api:latest
+    environment:
+      - ISSUER_ENDPOINT
+      - AWS_ENDPOINT
+      - EUREKA_ENDPOINT
+      - MONGODB_HOST=song-db
+    depends_on:
+      - song-db
+      - localstack
+      - discovery-service
+    networks:
+      - song-manager-network
+      - song-network
+  song-db:
+    image: mongo:6.0.6
+    container_name: song-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    networks:
+      - song-network
+    volumes:
+      - song-db-data:/var/lib/mongodb/data
+
+  localstack:
+    image: localstack/localstack:2.1.0
+    container_name: localstack
+    restart: always
+    environment:
+      - AWS_DEFAULT_REGION=eu-west-1
+      - EDGE_PORT=4566
+      - SERVICES=lambda,s3,sqs
+    expose:
+      - '4566-4583'
+    networks:
+      - song-manager-network
+    volumes:
+      - "${TEMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+networks:
+  song-manager-network:
+  auth-network:
+  file-network:
+  song-network:
+
+volumes:
+  user-db-data:
+  local-files:
+  resource-db-data:
+  song-db-data:

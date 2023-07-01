@@ -4,13 +4,17 @@ server:
 spring:
   application:
     name: auth-api
+  security:
+    oauth2:
+      authorizationserver:
+        issuer: ${ISSUER_ENDPOINT:http://localhost:9000}
   data:
     mongodb:
-      uri: mongodb://${MONGODB_USER:root}:${MONGODB_PASSWORD:root}@localhost:27019/user-db?authSource=admin
+      uri: mongodb://${MONGODB_USER:root}:${MONGODB_PASSWORD:root}@${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/user-db?authSource=admin
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_ENDPOINT:http://localhost:8761/eureka}
   instance:
     instance-id: ${spring.application.name}:${random.value}

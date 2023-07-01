@@ -12,8 +12,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:9000/oauth2/jwks
-          issuer-uri: http://localhost:9000
+          jwk-set-uri: ${ISSUER_ENDPOINT:http://localhost:9000}/oauth2/jwks
+          issuer-uri: ${ISSUER_ENDPOINT:http://localhost:9000}
   cloud:
     aws:
       endpoint: ${AWS_ENDPOINT:http://localhost:4566}
@@ -30,11 +30,13 @@ spring:
       username: ${MONGODB_USER:root}
       password: ${MONGODB_PASSWORD:root}
       database: ${MONGODB_DATABASE:song-db}
+      host: ${MONGODB_HOST:localhost}
+      port: ${MONGODB_PORT:27017}
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_ENDPOINT:http://localhost:8761/eureka}
   instance:
     instance-id: ${spring.application.name}:${random.value}
 
