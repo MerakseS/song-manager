@@ -14,7 +14,7 @@ services:
       - mongo-data:/var/lib/mongodb/data
 
   localstack:
-    container_name: localstack
+    container_name: file-api-localstack
     image: localstack/localstack:2.1.0
     restart: always
     environment:
