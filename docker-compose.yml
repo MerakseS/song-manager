@@ -1,6 +1,17 @@
 version: '3.1'
 
 services:
+  config-service:
+    container_name: config-service
+    build:
+      context: ./config-service
+    image: config-service:latest
+    restart: always
+    networks:
+      - song-manager-network
+    ports:
+      - '8888:8888'
+
   discovery-service:
     container_name: discovery-service
     build:

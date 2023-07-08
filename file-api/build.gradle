@@ -25,8 +25,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
     implementation "io.awspring.cloud:spring-cloud-aws-starter:$awsVersion"
     implementation "io.awspring.cloud:spring-cloud-aws-s3:$awsVersion"
     implementation "io.awspring.cloud:spring-cloud-aws-sqs:$awsVersion"
