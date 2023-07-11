@@ -1,30 +1,9 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.1.0'
-    id 'io.spring.dependency-management' version '1.1.0'
-}
-
-group = 'com.innowise'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
-
-repositories {
-    mavenCentral()
+    id 'org.springframework.boot'
 }
 
 dependencies {
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    implementation 'org.springframework.cloud:spring-cloud-starter-config'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
-    }
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
+    implementation "org.springframework.cloud:spring-cloud-starter-config:$configVersion"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:$eurekaVersion"
+    implementation "org.springframework.cloud:spring-cloud-starter-gateway:$gatewayVersion"
 }

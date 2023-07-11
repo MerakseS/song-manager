@@ -1,2 +1,56 @@
+plugins {
+    id 'org.springframework.boot' version '3.1.0' apply false
+    id 'io.spring.dependency-management' version '1.1.0' apply false
+}
+
 group = 'com.innowise'
 version = '1.0-SNAPSHOT'
+
+ext {
+    springCloudVersion = '2022.0.3'
+    configVersion = '4.0.3'
+    eurekaVersion = '4.0.2'
+    openfeignVersion = '4.0.3'
+    resilinceVersion = '3.0.2'
+
+    awsVersion = '3.0.1'
+    apacheCamelVersion = '3.20.6'
+
+    lombokVersion = '1.18.26'
+    mapstructVersion = '1.5.3.Final'
+    mp3agicVersion = '0.9.1'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.innowise'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '17'
+
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencies {
+        testImplementation "org.springframework.boot:spring-boot-starter-test"
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+            mavenBom "org.apache.camel.springboot:camel-spring-boot-bom:$apacheCamelVersion"
+        }
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}

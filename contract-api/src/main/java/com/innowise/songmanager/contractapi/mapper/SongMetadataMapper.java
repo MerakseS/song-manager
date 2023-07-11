@@ -10,8 +10,6 @@ import com.innowise.songmanager.contractapi.entity.SongMetadata;
 @Mapper(componentModel = "spring")
 public interface SongMetadataMapper {
 
-    SongMetadata mapDtoToEntity(SongMetadataDto songMetadataDto);
-
     SongMetadataDto mapEntityToDto(SongMetadata songMetadata);
 
     List<SongMetadataDto> mapEntityListToDtoList(List<SongMetadata> songMetadataList);
