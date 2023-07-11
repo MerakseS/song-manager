@@ -19,6 +19,7 @@ services:
     image: discovery-service:latest
     restart: always
     environment:
+      - CONFIG_ENDPOINT
       - eureka.instance.hostname=discovery-service
       - EUREKA_ENDPOINT
     networks:
@@ -33,7 +34,7 @@ services:
     image: api-gateway:latest
     restart: always
     environment:
-      - eureka.instance.hostname=discovery-service
+      - CONFIG_ENDPOINT
       - EUREKA_ENDPOINT
     depends_on:
       - discovery-service
@@ -48,6 +49,7 @@ services:
       context: ./auth-api
     image: auth-api:latest
     environment:
+      - CONFIG_ENDPOINT
       - ISSUER_ENDPOINT
       - EUREKA_ENDPOINT
       - MONGODB_HOST=user-db
@@ -76,6 +78,7 @@ services:
     build: ./file-api
     image: file-api:latest
     environment:
+      - CONFIG_ENDPOINT
       - ISSUER_ENDPOINT
       - AWS_ENDPOINT
       - EUREKA_ENDPOINT
@@ -106,6 +109,7 @@ services:
     build: ./enricher-service
     image: enricher-service:latest
     environment:
+      - CONFIG_ENDPOINT
       - AWS_ENDPOINT
       - EUREKA_ENDPOINT
       - SPOTIFY_CLIENT_ID
@@ -121,6 +125,7 @@ services:
     build: ./song-api
     image: song-api:latest
     environment:
+      - CONFIG_ENDPOINT
       - ISSUER_ENDPOINT
       - AWS_ENDPOINT
       - EUREKA_ENDPOINT

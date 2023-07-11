@@ -2,6 +2,7 @@ package com.innowise.songmanager.songapi.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -10,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface FileApiClient {
 
     @DeleteMapping("/{id}")
-    void deleteSongFile(@PathVariable("id") String id,
+    ResponseEntity<?> deleteSongFile(@PathVariable("id") String id,
         @RequestHeader(HttpHeaders.AUTHORIZATION) String token);
 }

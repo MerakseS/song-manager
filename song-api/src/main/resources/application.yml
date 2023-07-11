@@ -3,3 +3,7 @@ spring:
     name: song-api
   config:
     import: configserver:${CONFIG_ENDPOINT:http://localhost:8888}
+
+logging:
+  level:
+    org.springframework.cloud.openfeign: debug

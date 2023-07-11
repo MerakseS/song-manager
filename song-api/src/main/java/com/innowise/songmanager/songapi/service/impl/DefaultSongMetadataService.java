@@ -3,6 +3,8 @@ package com.innowise.songmanager.songapi.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultSongMetadataService implements SongMetadataService {
 
     private final FileApiClient fileApiClient;
+    private final CircuitBreakerFactory circuitBreakerFactory;
+
     private final SongMetadataRepository songMetadataRepository;
     private final AlbumRepository albumRepository;
     private final ArtistRepository artistRepository;
@@ -56,7 +60,10 @@ public class DefaultSongMetadataService implements SongMetadataService {
     @Transactional
     public void delete(String id, String token) {
         SongMetadata songMetadata = getById(id);
-        fileApiClient.deleteSongFile(songMetadata.getId(), token);
+
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("delete-song-file");
+        circuitBreaker.run(() -> fileApiClient.deleteSongFile(songMetadata.getId(), token));
+
         songMetadataRepository.deleteById(songMetadata.getId());
         log.info("Successfully deleted song metadata with id {}", id);
     }
