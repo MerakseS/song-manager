@@ -11,6 +11,9 @@ dependencies {
     implementation "org.springframework.cloud:spring-cloud-starter-config:$configVersion"
     implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:$eurekaVersion"
 
+    implementation "com.github.cloudyrock.mongock:mongock-spring-v5:$mongockVersion"
+    implementation "com.github.cloudyrock.mongock:mongodb-springdata-v3-driver:$mongockVersion"
+
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 }

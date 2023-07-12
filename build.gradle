@@ -19,6 +19,7 @@ ext {
     lombokVersion = '1.18.26'
     mapstructVersion = '1.5.3.Final'
     mp3agicVersion = '0.9.1'
+    mongockVersion = '4.3.8'
 }
 
 subprojects {

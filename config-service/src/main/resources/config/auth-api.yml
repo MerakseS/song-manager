@@ -9,3 +9,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://${MONGODB_USER:root}:${MONGODB_PASSWORD:root}@${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/user-db?authSource=admin
+
+mongock:
+  change-logs-scan-package:
+    - com.innowise.songmanager.authapi.repository.migration
