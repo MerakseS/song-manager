@@ -2,9 +2,15 @@ server:
   port: 8888
 
 spring:
+  application:
+    name: config-service
+  profiles:
+    active: ${PROFILE:native}
   cloud:
     config:
       server:
+        native:
+          searchLocations: classpath:/config
         git:
-          uri: ${GIT_URI:https://github.com/MerakseS/song-manager-config}
+          uri: ${GIT_URI}
           clone-on-start: true

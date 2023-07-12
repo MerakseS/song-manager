@@ -1,0 +1,23 @@
+server:
+  port: 0
+
+spring:
+  cloud:
+    aws:
+      endpoint: ${AWS_ENDPOINT:http://localhost:4566}
+      region:
+        static: ${AWS_REGION:eu-west-1}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY:root}
+        secret-key: ${AWS_SECRET_KEY:root}
+  security:
+    oauth2:
+      client:
+        registration:
+          spotify-client-credentials:
+            authorization-grant-type: client_credentials
+            client-id: ${SPOTIFY_CLIENT_ID}
+            client-secret: ${SPOTIFY_CLIENT_SECRET}
+        provider:
+          spotify-client-credentials:
+            token-uri: https://accounts.spotify.com/api/token

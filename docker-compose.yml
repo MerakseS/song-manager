@@ -3,8 +3,7 @@ version: '3.1'
 services:
   config-service:
     container_name: config-service
-    build:
-      context: ./config-service
+    build: ./config-service
     image: config-service:latest
     restart: always
     networks:
@@ -14,8 +13,7 @@ services:
 
   discovery-service:
     container_name: discovery-service
-    build:
-      context: ./discovery-service
+    build: ./discovery-service
     image: discovery-service:latest
     restart: always
     environment:
@@ -29,8 +27,7 @@ services:
 
   api-gateway:
     container_name: api-gateway
-    build:
-      context: ./api-gateway
+    build: ./api-gateway
     image: api-gateway:latest
     restart: always
     environment:
@@ -45,8 +42,7 @@ services:
 
   auth-api:
     container_name: auth-api
-    build:
-      context: ./auth-api
+    build: ./auth-api
     image: auth-api:latest
     environment:
       - CONFIG_ENDPOINT

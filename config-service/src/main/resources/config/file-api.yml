@@ -1,0 +1,37 @@
+server:
+  port: 0
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${ISSUER_ENDPOINT:http://localhost:9000}/oauth2/jwks
+          issuer-uri: ${ISSUER_ENDPOINT:http://localhost:9000}
+  cloud:
+    aws:
+      endpoint: ${AWS_ENDPOINT:http://localhost:4566}
+      region:
+        static: ${AWS_REGION:eu-west-1}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY:root}
+        secret-key: ${AWS_SECRET_KEY:root}
+      s3:
+        path-style-access-enabled: on
+  data:
+    mongodb:
+      authentication-database: admin
+      username: ${MONGODB_USER:root}
+      password: ${MONGODB_PASSWORD:root}
+      database: ${MONGODB_DATABASE:song-db}
+      host: ${MONGODB_HOST:localhost}
+      port: ${MONGODB_PORT:27017}
+
+file-api:
+  storage:
+    local-path: uploads/
+    bucket-name: songs

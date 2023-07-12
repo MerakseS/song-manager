@@ -1,0 +1,21 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_ENDPOINT:http://localhost:8761/eureka}
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
+
+logging:
+  level:
+    com.innowise: info
+    root: info
+  file:
+    name: ${LOGS_DIRECTORY:logs}/${spring.application.name}.log
+  pattern:
+    dateformat: dd-MM-yyyy HH:mm:ss.SSS, Europe/Minsk
+  logback:
+    rollingpolicy:
+      max-history: 30
+      max-file-size: 10MB
+      file-name-pattern: ${LOGS_DIRECTORY:logs}/archived/${spring.application.name}.%d{dd-MM-yyyy}.%i.log
+

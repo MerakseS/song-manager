@@ -1,0 +1,21 @@
+server:
+  port: 0
+
+spring:
+  cloud:
+    aws:
+      endpoint: ${AWS_ENDPOINT:http://localhost:4566}
+      region:
+        static: ${AWS_REGION:eu-west-1}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY:root}
+        secret-key: ${AWS_SECRET_KEY:root}
+  data:
+    mongodb:
+      uri: mongodb://${MONGODB_USER:root}:${MONGODB_PASSWORD:root}@${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/song-metadata-db?authSource=admin
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${ISSUER_ENDPOINT:http://localhost:9000}/oauth2/jwks
+          issuer-uri: ${ISSUER_ENDPOINT:http://localhost:9000}
