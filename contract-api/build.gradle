@@ -8,4 +8,7 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
     compileOnly "org.mapstruct:mapstruct:$mapstructVersion"
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
 }

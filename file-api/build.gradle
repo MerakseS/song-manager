@@ -21,4 +21,6 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
     implementation "com.mpatric:mp3agic:$mp3agicVersion"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }

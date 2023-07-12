@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.8'
 
 services:
   config-service:
@@ -20,6 +20,8 @@ services:
       - CONFIG_ENDPOINT
       - eureka.instance.hostname=discovery-service
       - EUREKA_ENDPOINT
+    depends_on:
+      - config-service
     networks:
       - song-manager-network
     ports:
@@ -34,6 +36,7 @@ services:
       - CONFIG_ENDPOINT
       - EUREKA_ENDPOINT
     depends_on:
+      - config-service
       - discovery-service
     networks:
       - song-manager-network
@@ -44,12 +47,14 @@ services:
     container_name: auth-api
     build: ./auth-api
     image: auth-api:latest
+    restart: always
     environment:
       - CONFIG_ENDPOINT
       - ISSUER_ENDPOINT
       - EUREKA_ENDPOINT
       - MONGODB_HOST=user-db
     depends_on:
+      - config-service
       - user-db
       - discovery-service
     networks:
@@ -73,6 +78,7 @@ services:
     container_name: file-api
     build: ./file-api
     image: file-api:latest
+    restart: always
     environment:
       - CONFIG_ENDPOINT
       - ISSUER_ENDPOINT
@@ -80,6 +86,7 @@ services:
       - EUREKA_ENDPOINT
       - MONGODB_HOST=resource-db
     depends_on:
+      - config-service
       - resource-db
       - localstack
       - discovery-service
@@ -104,6 +111,7 @@ services:
     container_name: enricher-service
     build: ./enricher-service
     image: enricher-service:latest
+    restart: always
     environment:
       - CONFIG_ENDPOINT
       - AWS_ENDPOINT
@@ -111,6 +119,7 @@ services:
       - SPOTIFY_CLIENT_ID
       - SPOTIFY_CLIENT_SECRET
     depends_on:
+      - config-service
       - localstack
       - discovery-service
     networks:
@@ -120,6 +129,7 @@ services:
     container_name: song-api
     build: ./song-api
     image: song-api:latest
+    restart: always
     environment:
       - CONFIG_ENDPOINT
       - ISSUER_ENDPOINT
@@ -127,6 +137,7 @@ services:
       - EUREKA_ENDPOINT
       - MONGODB_HOST=song-db
     depends_on:
+      - config-service
       - song-db
       - localstack
       - discovery-service

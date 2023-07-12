@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation project(path: ':contract-api')
 
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:$eurekaVersion"
@@ -20,4 +21,6 @@ dependencies {
 
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
