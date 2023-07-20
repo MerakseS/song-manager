@@ -10,13 +10,15 @@ import { OAuthModule } from "angular-oauth2-oidc";
 import { AuthorizedComponent } from './components/authorized/authorized.component';
 import { SongsComponent } from './components/songs/songs.component';
 import { JwtInterceptor } from "./interceptors/jwt.interceptor";
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
         AuthorizedComponent,
-        SongsComponent
+        SongsComponent,
+        HomeComponent
     ],
     imports: [
         BrowserModule,

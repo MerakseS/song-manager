@@ -31,4 +31,8 @@ export class AuthenticationService {
             }
         );
     }
+
+    public logout() {
+        this.oauthService.logOut({_method: "POST"});
+    }
 }

@@ -1,1 +1,19 @@
-<p>songs works!</p>
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between p-2 mb-4 bg-white border-bottom">
+    <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+        <i class="bi bi-file-music fs-3 me-2"></i>
+        <span class="fs-4">Song manager</span>
+    </a>
+
+    <div class="col-md-3 text-end">
+        <button type="button" class="btn btn-outline-primary me-2" (click)="logout()">Logout</button>
+    </div>
+</header>
+
+<div class="container">
+    <form (submit)="onSubmit()">
+        <div class="input-group mb-3">
+            <input class="form-control" type="file" id="formFile" accept=".mp3" (change)="onFileSelected($event)">
+            <button type="submit" class="btn btn-primary">Загрузить</button>
+        </div>
+    </form>
+</div>

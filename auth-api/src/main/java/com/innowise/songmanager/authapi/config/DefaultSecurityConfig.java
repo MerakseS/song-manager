@@ -17,6 +17,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 public class DefaultSecurityConfig {
@@ -24,10 +26,16 @@ public class DefaultSecurityConfig {
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+            .csrf(AbstractHttpConfigurer::disable)
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(customizer -> customizer
                 .anyRequest().permitAll())
             .formLogin(Customizer.withDefaults())
+            .logout(customizer -> customizer
+                .logoutSuccessHandler((request, response, authentication) ->
+                    response.setStatus(HttpServletResponse.SC_NO_CONTENT))
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID"))
             .build();
     }
 

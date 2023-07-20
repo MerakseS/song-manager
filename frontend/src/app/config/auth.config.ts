@@ -7,6 +7,9 @@ export const authConfig: AuthConfig = {
     tokenEndpoint: environment.issuerUrl + '/oauth2/token',
     redirectUri: window.location.origin + '/authorized',
 
+    logoutUrl: environment.issuerUrl + '/logout',
+    postLogoutRedirectUri: window.location.origin + '/home',
+
     clientId: environment.clientId,
     dummyClientSecret: environment.clientSecret,
     useHttpBasicAuth: true,
