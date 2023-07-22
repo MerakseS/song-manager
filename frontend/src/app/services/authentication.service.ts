@@ -24,8 +24,7 @@ export class AuthenticationService {
     }
 
     public authorize(code: string) {
-        return this.oauthService.fetchTokenUsingGrant('authorization_code',
-            {
+        return this.oauthService.fetchTokenUsingGrant('authorization_code', {
                 code,
                 'redirect_uri': this.oauthService.redirectUri
             }

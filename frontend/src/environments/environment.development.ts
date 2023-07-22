@@ -3,4 +3,4 @@ export const environment = {
     issuerUrl: 'http://localhost:9000',
     clientId: 'songs-client',
     clientSecret: 'secret'
-}
+};

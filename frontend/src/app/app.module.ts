@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { appRoutingModule } from "./appRoutingModule";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { OAuthModule } from "angular-oauth2-oidc";
@@ -11,6 +10,10 @@ import { AuthorizedComponent } from './components/authorized/authorized.componen
 import { SongsComponent } from './components/songs/songs.component';
 import { JwtInterceptor } from "./interceptors/jwt.interceptor";
 import { HomeComponent } from './components/home/home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { RouterModule } from "@angular/router";
+import { AppRoutingModule } from "./app-routing.module";
+import { ErrorInterceptor } from "./interceptors/error.interceptor";
 
 @NgModule({
     declarations: [
@@ -18,18 +21,21 @@ import { HomeComponent } from './components/home/home.component';
         LoginComponent,
         AuthorizedComponent,
         SongsComponent,
-        HomeComponent
+        HomeComponent,
+        HeaderComponent
     ],
     imports: [
         BrowserModule,
-        appRoutingModule,
+        AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
         OAuthModule.forRoot()
     ],
+    exports: [RouterModule],
     providers: [
-        {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
+        {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
     ],
     bootstrap: [AppComponent]
 })
