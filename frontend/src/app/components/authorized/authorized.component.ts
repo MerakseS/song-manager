@@ -18,10 +18,7 @@ export class AuthorizedComponent implements OnInit {
         this.activatedRoute.queryParams.subscribe(params => {
             const code = params['code'];
             this.authService.authorize(code)
-                .then(() => {
-                    console.log(this.authService.token);
-                    return this.router.navigate(['songs']);
-                })
+                .then(() => this.router.navigate(['songs']))
         })
     }
 }

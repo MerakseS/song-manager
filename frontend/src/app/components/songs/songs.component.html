@@ -1,14 +1,18 @@
 <app-header></app-header>
 
 <div class="container">
-    <form (submit)="uploadFile()">
+    <form (submit)="uploadFile()" *ngIf="authService.hasAuthority('ROLE_ADMIN')">
         <div class="input-group mb-3">
-            <input class="form-control" type="file" id="formFile" accept=".mp3" (change)="onFileSelected($event)">
-            <button [disabled]="selectedFile == null" type="submit" class="btn btn-primary">Upload</button>
+            <input (change)="onFileSelected($event)" accept=".mp3" class="form-control" id="formFile" type="file">
+            <button [disabled]="selectedFile == null" class="btn btn-primary" type="submit">Upload</button>
         </div>
     </form>
 
     <table *ngIf="Array.isArray(songList) && songList.length > 0" class="table table-striped">
+        <caption *ngIf="isSongLoading">
+            <div class="spinner-border spinner-border-sm" role="status"></div>
+            <span> Loading...</span>
+        </caption>
         <thead>
         <tr>
             <th>#</th>
@@ -25,23 +29,23 @@
             <td class="fw-semibold">{{song.name}}</td>
             <td>
                 <ng-container *ngFor="let artist of song.artists; let last = last">
-                    <a class="link-dark" href="{{artist.link}}" target="_blank"
-                       rel="noopener noreferrer">{{artist.name}}</a>
+                    <a class="link-dark" href="{{artist.link}}" rel="noopener noreferrer"
+                       target="_blank">{{artist.name}}</a>
                     <ng-template [ngIf]="!last">,&nbsp;</ng-template>
                 </ng-container>
             </td>
-            <td><a class="link-dark" href="{{song.album.link}}" target="_blank" rel="noopener noreferrer">
+            <td><a class="link-dark" href="{{song.album.link}}" rel="noopener noreferrer" target="_blank">
                 {{song.album.name}}</a></td>
             <td>{{song.duration | date: 'mm:ss'}}</td>
             <td>
                 <div class="d-flex justify-content-end">
-                    <a class="btn btn-link link-dark py-0 px-2" href="{{song.link}}" target="_blank" rel="noopener noreferrer">
+                    <a class="btn btn-link link-dark py-0 px-2" href="{{song.link}}" rel="noopener noreferrer" target="_blank">
                         <i class="bi bi-box-arrow-up-right"></i></a>
                     <form (submit)="downloadFile(song.id)">
-                        <button type="submit" class="btn btn-link link-dark py-0 px-2"><i class="bi bi-download"></i></button>
+                        <button class="btn btn-link link-dark py-0 px-2" type="submit"><i class="bi bi-download"></i></button>
                     </form>
-                    <form (submit)="deleteSong(song.id)">
-                        <button type="submit" class="btn btn-link link-dark py-0 px-2"><i class="bi bi-trash"></i></button>
+                    <form (submit)="deleteSong(song.id)" *ngIf="authService.hasAuthority('ROLE_ADMIN')">
+                        <button class="btn btn-link link-dark py-0 px-2" type="submit"><i class="bi bi-trash"></i></button>
                     </form>
                 </div>
             </td>

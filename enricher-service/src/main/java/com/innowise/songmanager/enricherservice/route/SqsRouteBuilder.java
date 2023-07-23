@@ -23,17 +23,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SqsRouteBuilder extends RouteBuilder {
 
+    private static final String SQS_URI_FORMAT = "aws2-sqs://%s?amazonSQSClient=#client&autoCreateQueue=true";
+    private static final String CONSUMER_QUEUE_NAME = "songTags";
+    private static final String PRODUCER_QUEUE_NAME = "songMetadata";
+
     private static final String REGISTRATION_ID = "spotify-client-credentials";
 
     @Value("${spring.security.oauth2.client.registration.spotify-client-credentials.client-secret}")
     private String clientSecret;
 
     private final OAuth2AuthorizedClientManager authorizedClientManager;
-    private String spotifyToken;
 
-    private static final String SQS_URI_FORMAT = "aws2-sqs://%s?amazonSQSClient=#client&autoCreateQueue=true";
-    private static final String CONSUMER_QUEUE_NAME = "songTags";
-    private static final String PRODUCER_QUEUE_NAME = "songMetadata";
+    private String spotifyToken;
 
     @Override
     public void configure() {

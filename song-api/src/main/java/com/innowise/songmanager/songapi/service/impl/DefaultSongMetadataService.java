@@ -77,7 +77,8 @@ public class DefaultSongMetadataService implements SongMetadataService {
         Optional<Album> optionalAlbum = albumRepository.findAlbumByName(album.getName());
         if (optionalAlbum.isEmpty()) {
             albumRepository.save(album);
-        } else {
+        }
+        else {
             album.setId(optionalAlbum.get().getId());
         }
     }
@@ -87,7 +88,8 @@ public class DefaultSongMetadataService implements SongMetadataService {
             Optional<Artist> optionalArtist = artistRepository.findArtistByName(artist.getName());
             if (optionalArtist.isEmpty()) {
                 artistRepository.save(artist);
-            } else {
+            }
+            else {
                 artist.setId(optionalArtist.get().getId());
             }
         }

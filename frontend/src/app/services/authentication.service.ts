@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OAuthService } from "angular-oauth2-oidc";
 import { authConfig } from "../config/auth.config";
+import jwtDecode from "jwt-decode";
 
 @Injectable({
     providedIn: 'root'
@@ -11,12 +12,13 @@ export class AuthenticationService {
         oauthService.configure(authConfig);
     }
 
-    get token() {
+    public get token() {
         return this.oauthService.getAccessToken();
     }
 
-    public isAuthenticated() {
-        return this.oauthService.hasValidAccessToken();
+    public get roles() {
+        const claims = jwtDecode(this.token);
+        return claims['roles'];
     }
 
     public initLogin() {
@@ -29,6 +31,14 @@ export class AuthenticationService {
                 'redirect_uri': this.oauthService.redirectUri
             }
         );
+    }
+
+    public isAuthenticated() {
+        return this.oauthService.hasValidAccessToken();
+    }
+
+    public hasAuthority(role: string) {
+        return this.roles.includes(role);
     }
 
     public logout() {

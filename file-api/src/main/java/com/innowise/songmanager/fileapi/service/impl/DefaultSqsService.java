@@ -15,10 +15,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DefaultSqsService implements SqsService {
 
+    private static final String QUEUE_NAME = "songTags";
+
     private final ObjectMapper objectMapper;
     private final SqsTemplate sqsTemplate;
-
-    private static final String QUEUE_NAME = "songTags";
 
     @Override
     public void sendNewSong(SongTagsDto songTagsDto) {

@@ -23,9 +23,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FileController {
 
-    private final FileService fileService;
-
     private final static String DISPOSITION_FORMAT = "attachment; filename=\"%s\"";
+
+    private final FileService fileService;
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
