@@ -8,11 +8,7 @@
         </div>
     </form>
 
-    <table *ngIf="Array.isArray(songList) && songList.length > 0" class="table table-striped">
-        <caption *ngIf="isSongLoading">
-            <div class="spinner-border spinner-border-sm" role="status"></div>
-            <span> Loading...</span>
-        </caption>
+    <table *ngIf="Array.isArray(songList) && songList.length > 0" class="table table-striped mb-2">
         <thead>
         <tr>
             <th>#</th>
@@ -52,4 +48,8 @@
         </tr>
         </tbody>
     </table>
+    <div *ngIf="isSongLoading" class="text-secondary">
+        <div class="spinner-border spinner-border-sm" role="status"></div>
+        <span> Loading...</span>
+    </div>
 </div>

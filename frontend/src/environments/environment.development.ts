@@ -1,6 +1,6 @@
 export const environment = {
-    baseUrl: 'http://localhost:8765/songs',
-    issuerUrl: 'http://localhost:9000',
-    clientId: 'songs-client',
-    clientSecret: 'secret'
+    baseUrl: window['env']['baseUrl'] || 'http://localhost:8765/songs',
+    issuerUrl: window['env']['issuerUrl'] || 'http://localhost:9000',
+    clientId: window['env']['clientId'] || 'songs-client',
+    clientSecret: window['env']['clientSecret'] || 'secret'
 };
