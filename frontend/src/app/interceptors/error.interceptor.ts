@@ -28,6 +28,10 @@ export class ErrorInterceptor implements HttpInterceptor {
                                 void this.router.navigate(["/login"]);
                                 handled = true;
                                 break;
+                            case 403:
+                                alert("403 Forbidden!");
+                                handled = true;
+                                break;
                         }
                     }
                 }

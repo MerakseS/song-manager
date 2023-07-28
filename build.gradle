@@ -20,6 +20,8 @@ ext {
     mapstructVersion = '1.5.3.Final'
     mp3agicVersion = '0.9.1'
     mongockVersion = '4.3.8'
+
+    restAssuredVersion = '5.3.0'
 }
 
 subprojects {

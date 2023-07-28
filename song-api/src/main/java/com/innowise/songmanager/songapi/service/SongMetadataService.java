@@ -6,7 +6,7 @@ import com.innowise.songmanager.contractapi.entity.SongMetadata;
 
 public interface SongMetadataService {
 
-    void create(SongMetadata songMetadata);
+    SongMetadata create(SongMetadata songMetadata);
 
     List<SongMetadata> getAll();
 

@@ -10,5 +10,16 @@ import com.innowise.songmanager.contractapi.entity.Album;
 @Repository
 public interface AlbumRepository extends MongoRepository<Album, String> {
 
-    Optional<Album> findAlbumByName(String name);
+    Optional<Album> findByName(String name);
+
+    default Album saveIfNotExists(Album album) {
+        Optional<Album> optionalAlbum = findByName(album.getName());
+        if (optionalAlbum.isPresent()) {
+            album.setId(optionalAlbum.get().getId());
+            return album;
+        }
+        else {
+            return save(album);
+        }
+    }
 }

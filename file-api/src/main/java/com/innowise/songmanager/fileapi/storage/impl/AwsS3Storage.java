@@ -5,7 +5,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.innowise.songmanager.contractapi.exception.StorageException;
+import com.innowise.songmanager.contractapi.exception.impl.StorageException;
 import com.innowise.songmanager.fileapi.storage.Storage;
 
 import io.awspring.cloud.s3.S3Template;

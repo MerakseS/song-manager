@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.innowise.songmanager.contractapi.entity.Album;
 import com.innowise.songmanager.contractapi.entity.Artist;
 import com.innowise.songmanager.contractapi.entity.SongMetadata;
-import com.innowise.songmanager.contractapi.exception.ParseException;
+import com.innowise.songmanager.contractapi.exception.impl.ParseException;
 
 import lombok.RequiredArgsConstructor;
 

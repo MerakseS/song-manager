@@ -23,4 +23,5 @@ dependencies {
     implementation "com.mpatric:mp3agic:$mp3agicVersion"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
 }

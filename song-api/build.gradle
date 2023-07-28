@@ -26,4 +26,5 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
 }

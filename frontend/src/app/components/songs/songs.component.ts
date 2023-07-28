@@ -39,7 +39,7 @@ export class SongsComponent implements OnInit {
         this.songService.uploadFile(this.selectedFile)
             .subscribe(response =>
                 this.songService.get(response['id'])
-                    .pipe(retry({delay: 500, count: 10}))
+                    .pipe(retry({delay: 500, count: 20}))
                     .subscribe(song => {
                         this.songList.push(song);
                         this.isSongLoading = false;

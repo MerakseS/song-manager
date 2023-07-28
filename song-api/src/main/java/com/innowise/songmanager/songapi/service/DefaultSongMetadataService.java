@@ -1,22 +1,18 @@
-package com.innowise.songmanager.songapi.service.impl;
+package com.innowise.songmanager.songapi.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.innowise.songmanager.contractapi.entity.Album;
-import com.innowise.songmanager.contractapi.entity.Artist;
 import com.innowise.songmanager.contractapi.entity.SongMetadata;
-import com.innowise.songmanager.contractapi.exception.EntityNotFoundException;
+import com.innowise.songmanager.contractapi.exception.impl.EntityNotFoundException;
 import com.innowise.songmanager.songapi.client.FileApiClient;
 import com.innowise.songmanager.songapi.repository.AlbumRepository;
 import com.innowise.songmanager.songapi.repository.ArtistRepository;
 import com.innowise.songmanager.songapi.repository.SongMetadataRepository;
-import com.innowise.songmanager.songapi.service.SongMetadataService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,11 +31,13 @@ public class DefaultSongMetadataService implements SongMetadataService {
 
     @Override
     @Transactional
-    public void create(SongMetadata songMetadata) {
-        saveAlbum(songMetadata.getAlbum());
-        saveArtists(songMetadata.getArtists());
-        songMetadataRepository.save(songMetadata);
+    public SongMetadata create(SongMetadata songMetadata) {
+        albumRepository.saveIfNotExists(songMetadata.getAlbum());
+        artistRepository.saveAllIfNotExists(songMetadata.getArtists());
+        songMetadata = songMetadataRepository.save(songMetadata);
+
         log.info("Successfully created song metadata with id {}", songMetadata.getId());
+        return songMetadata;
     }
 
     @Override
@@ -64,34 +62,12 @@ public class DefaultSongMetadataService implements SongMetadataService {
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("delete-song-file");
         circuitBreaker.run(() -> fileApiClient.deleteSongFile(songMetadata.getId(), token));
 
-        songMetadataRepository.deleteById(songMetadata.getId());
+        songMetadataRepository.delete(songMetadata);
         log.info("Successfully deleted song metadata with id {}", id);
     }
 
     private SongMetadata getById(String id) {
         return songMetadataRepository.findById(id).orElseThrow(() ->
             new EntityNotFoundException(String.format("Can't find song with id %s", id)));
-    }
-
-    private void saveAlbum(Album album) {
-        Optional<Album> optionalAlbum = albumRepository.findAlbumByName(album.getName());
-        if (optionalAlbum.isEmpty()) {
-            albumRepository.save(album);
-        }
-        else {
-            album.setId(optionalAlbum.get().getId());
-        }
-    }
-
-    private void saveArtists(List<Artist> artistList) {
-        for (Artist artist : artistList) {
-            Optional<Artist> optionalArtist = artistRepository.findArtistByName(artist.getName());
-            if (optionalArtist.isEmpty()) {
-                artistRepository.save(artist);
-            }
-            else {
-                artist.setId(optionalArtist.get().getId());
-            }
-        }
     }
 }

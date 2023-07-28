@@ -4,3 +4,7 @@ spring:
   config:
     import: configserver:${CONFIG_ENDPOINT:http://localhost:8888}
 
+test:
+  token:
+    user: ${USER_TOKEN}
+    admin: ${ADMIN_TOKEN}

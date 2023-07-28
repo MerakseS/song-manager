@@ -46,6 +46,6 @@ public class SongController {
     public ResponseEntity<Object> delete(@PathVariable("id") String id,
         @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         songMetadataService.delete(id, token);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

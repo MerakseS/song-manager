@@ -1,4 +1,4 @@
-package com.innowise.songmanager.contractapi.exception;
+package com.innowise.songmanager.contractapi.exception.impl;
 
 public class StorageException extends RuntimeException {
 

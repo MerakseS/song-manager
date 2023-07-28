@@ -2,6 +2,7 @@ package com.innowise.songmanager.fileapi.controller;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,7 @@ public class FileController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> uploadFile(@RequestPart("file") MultipartFile file) {
         SongFile songFile = fileService.save(file);
-        return ResponseEntity.ok().body(songFile);
+        return ResponseEntity.status(HttpStatus.CREATED).body(songFile);
     }
 
     @GetMapping("/{fileId}")
@@ -48,6 +49,6 @@ public class FileController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> deleteFile(@PathVariable("fileId") String fileId) {
         fileService.delete(fileId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
