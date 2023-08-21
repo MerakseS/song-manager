@@ -1,12 +1,14 @@
 dependencies {
-    implementation "org.springframework:spring-web:$springWebVersion"
+    implementation "org.springframework:spring-webmvc:$springWebVersion"
+    implementation "org.springframework.security:spring-security-core:$springSecurityVersion"
     implementation "org.springframework.data:spring-data-mongodb:$springDataMongodbVersion"
-
     implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
 
+    compileOnly "jakarta.servlet:jakarta.servlet-api:$jakartaVersion"
     compileOnly "org.projectlombok:lombok:$lombokVersion"
-    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
     compileOnly "org.mapstruct:mapstruct:$mapstructVersion"
+
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
 
     testImplementation platform('org.junit:junit-bom:5.9.1')

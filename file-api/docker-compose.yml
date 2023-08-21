@@ -4,7 +4,7 @@ services:
   mongodb:
     image: mongo:6.0.6
     container_name: file-api-mongodb
-    restart: always
+    restart: on-failure
     ports:
       - '27017:27017'
     environment:
@@ -16,7 +16,7 @@ services:
   localstack:
     container_name: file-api-localstack
     image: localstack/localstack:2.1.0
-    restart: always
+    restart: on-failure
     environment:
       - AWS_DEFAULT_REGION=eu-west-1
       - EDGE_PORT=4566

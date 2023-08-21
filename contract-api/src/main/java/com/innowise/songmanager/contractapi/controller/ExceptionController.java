@@ -1,4 +1,4 @@
-package com.innowise.songmanager.songapi.controller;
+package com.innowise.songmanager.contractapi.controller;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.innowise.songmanager.contractapi.exception.ApiError;
 import com.innowise.songmanager.contractapi.exception.impl.EntityNotFoundException;
+import com.innowise.songmanager.contractapi.exception.impl.ParseException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,6 +66,12 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException exception) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Entity not found", exception);
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(ParseException.class)
+    protected ResponseEntity<Object> handleParse(ParseException exception) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Bad request", exception);
         return buildResponseEntity(apiError);
     }
 

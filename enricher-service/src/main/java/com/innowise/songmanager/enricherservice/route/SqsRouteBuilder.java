@@ -27,6 +27,9 @@ public class SqsRouteBuilder extends RouteBuilder {
     private static final String CONSUMER_QUEUE_NAME = "songTags";
     private static final String PRODUCER_QUEUE_NAME = "songMetadata";
 
+    public static final String SPOTIFY_SEARCH_URL = "https://api.spotify.com/v1/search";
+    private static final String SPOTIFY_SEARCH_QUERY = "q=remaster%2520track:${body.title}%2520artist:${body.artist}&type=track&limit=1";
+
     private static final String REGISTRATION_ID = "spotify-client-credentials";
 
     @Value("${spring.security.oauth2.client.registration.spotify-client-credentials.client-secret}")
@@ -42,16 +45,15 @@ public class SqsRouteBuilder extends RouteBuilder {
             .convertBodyTo(SongTagsDto.class)
             .setProperty("songId", simple("${body.songId}"))
             .setHeader("Authorization", () -> spotifyToken)
-            .setHeader(Exchange.HTTP_QUERY, simple(
-                "q=remaster%2520track:${body.title}%2520artist:${body.artist}&type=track&limit=1"))
-            .to("https://api.spotify.com/v1/search")
+            .setHeader(Exchange.HTTP_QUERY, simple(SPOTIFY_SEARCH_QUERY))
+            .to(SPOTIFY_SEARCH_URL)
             .convertBodyTo(SongMetadata.class)
             .marshal().json()
             .log("Successfully found song metadata: ${body}")
             .to(String.format(SQS_URI_FORMAT, PRODUCER_QUEUE_NAME));
     }
 
-    @Scheduled(fixedRate = 3600, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedRate = 3600L, timeUnit = TimeUnit.SECONDS)
     private void updateSpotifyToken() {
         OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest
             .withClientRegistrationId(REGISTRATION_ID)

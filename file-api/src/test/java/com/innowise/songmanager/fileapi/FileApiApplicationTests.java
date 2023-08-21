@@ -128,5 +128,4 @@ class FileApiApplicationTests {
             .when().delete("/files/{id}", fileId)
             .then().statusCode(HttpStatus.NO_CONTENT.value());
     }
-
 }

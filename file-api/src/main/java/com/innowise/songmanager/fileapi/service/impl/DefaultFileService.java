@@ -1,10 +1,10 @@
 package com.innowise.songmanager.fileapi.service.impl;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +21,7 @@ import com.innowise.songmanager.fileapi.storage.Storage;
 import com.innowise.songmanager.fileapi.storage.impl.AwsS3Storage;
 import com.innowise.songmanager.fileapi.storage.impl.LocalStorage;
 import com.mpatric.mp3agic.ID3v1;
-import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,11 +60,11 @@ public class DefaultFileService implements FileService {
     @Override
     public SongFile get(String id) {
         SongFile songFile = getById(id);
-
         Storage storage = getStorageByType(songFile.getStorageType());
-        songFile.setFile(storage.download(songFile.getFilePath()));
-        log.info("Successfully found song with id {}", id);
+        Resource file = storage.download(songFile.getFilePath());
+        songFile.setFile(file);
 
+        log.info("Successfully found song with id {}", id);
         return songFile;
     }
 
@@ -74,17 +72,11 @@ public class DefaultFileService implements FileService {
     @Transactional
     public void delete(String fileId) {
         SongFile songFile = getById(fileId);
-
         Storage storage = getStorageByType(songFile.getStorageType());
         storage.delete(songFile.getFilePath());
-
         songFileRepository.delete(songFile);
-        log.info("Successfully deleted song with id {}", fileId);
-    }
 
-    private SongFile getById(String id) {
-        return songFileRepository.findById(id).orElseThrow(() ->
-            new EntityNotFoundException(String.format("Can't find song with id %s", id)));
+        log.info("Successfully deleted song with id {}", fileId);
     }
 
     private void storeFile(MultipartFile file, SongFile songFile) {
@@ -99,7 +91,16 @@ public class DefaultFileService implements FileService {
         }
     }
 
-    private SongTagsDto parseMp3(MultipartFile multipartFile) {
+    private SongFile getById(String id) {
+        return songFileRepository.findById(id).orElseThrow(() ->
+            new EntityNotFoundException(String.format("Can't find song with id %s", id)));
+    }
+
+    private Storage getStorageByType(StorageType storageType) {
+        return storageType.equals(StorageType.S3) ? awsS3Storage : localStorage;
+    }
+
+    private static SongTagsDto parseMp3(MultipartFile multipartFile) {
         try {
             Path tempFile = Files.createTempFile(null, ".mp3");
             multipartFile.transferTo(tempFile.toFile());
@@ -112,12 +113,8 @@ public class DefaultFileService implements FileService {
 
             return songTagsDto;
         }
-        catch (IOException | InvalidDataException | UnsupportedTagException e) {
+        catch (Exception e) {
             throw new ParseException("Can't parse mp3 tags", e);
         }
-    }
-
-    private Storage getStorageByType(StorageType storageType) {
-        return storageType.equals(StorageType.S3) ? awsS3Storage : localStorage;
     }
 }

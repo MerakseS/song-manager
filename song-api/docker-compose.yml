@@ -4,7 +4,7 @@ services:
   mongodb:
     image: mongo:6.0.6
     container_name: song-api-mongodb
-    restart: always
+    restart: on-failure
     ports:
       - '27018:27017'
     environment:

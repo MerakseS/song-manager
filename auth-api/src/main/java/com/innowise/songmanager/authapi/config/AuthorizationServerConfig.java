@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -43,12 +44,18 @@ import jakarta.servlet.http.HttpServletResponse;
 @Configuration
 public class AuthorizationServerConfig {
 
+    @Value("${oauth2.client.id}")
+    private String clientId;
+
+    @Value("${oauth2.client.secret}")
+    private String clientSecret;
+
     @Bean
     public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
         RegisteredClient registeredClient = RegisteredClient
             .withId(UUID.randomUUID().toString())
-            .clientId("songs-client")
-            .clientSecret(passwordEncoder.encode("secret"))
+            .clientId(clientId)
+            .clientSecret(passwordEncoder.encode(clientSecret))
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)

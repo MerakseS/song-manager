@@ -5,9 +5,12 @@ services:
     container_name: frontend
     build: ./frontend
     image: frontend:latest
-    restart: always
+    restart: on-failure
     networks:
       - frontend-network
+    environment:
+      - CLIENT_ID
+      - CLIENT_SECRET
     ports:
         - '4200:80'
 
@@ -15,7 +18,7 @@ services:
     container_name: config-service
     build: ./config-service
     image: config-service:latest
-    restart: always
+    restart: on-failure
     networks:
       - song-manager-network
 
@@ -23,7 +26,7 @@ services:
     container_name: discovery-service
     build: ./discovery-service
     image: discovery-service:latest
-    restart: always
+    restart: on-failure
     environment:
       - CONFIG_ENDPOINT
       - eureka.instance.hostname=discovery-service
@@ -39,7 +42,7 @@ services:
     container_name: api-gateway
     build: ./api-gateway
     image: api-gateway:latest
-    restart: always
+    restart: on-failure
     environment:
       - CONFIG_ENDPOINT
       - EUREKA_ENDPOINT
@@ -56,12 +59,14 @@ services:
     container_name: auth-api
     build: ./auth-api
     image: auth-api:latest
-    restart: always
+    restart: on-failure
     environment:
       - CONFIG_ENDPOINT
       - ISSUER_ENDPOINT
       - EUREKA_ENDPOINT
       - MONGODB_HOST=user-db
+      - CLIENT_ID
+      - CLIENT_SECRET
     depends_on:
       - config-service
       - user-db
@@ -75,7 +80,7 @@ services:
   user-db:
     image: mongo:6.0.6
     container_name: user-mongodb
-    restart: always
+    restart: on-failure
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
@@ -88,7 +93,7 @@ services:
     container_name: file-api
     build: ./file-api
     image: file-api:latest
-    restart: always
+    restart: on-failure
     environment:
       - CONFIG_ENDPOINT
       - ISSUER_ENDPOINT
@@ -108,7 +113,7 @@ services:
   resource-db:
     image: mongo:6.0.6
     container_name: resource-mongodb
-    restart: always
+    restart: on-failure
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
@@ -121,7 +126,7 @@ services:
     container_name: enricher-service
     build: ./enricher-service
     image: enricher-service:latest
-    restart: always
+    restart: on-failure
     environment:
       - CONFIG_ENDPOINT
       - AWS_ENDPOINT
@@ -139,7 +144,7 @@ services:
     container_name: song-api
     build: ./song-api
     image: song-api:latest
-    restart: always
+    restart: on-failure
     environment:
       - CONFIG_ENDPOINT
       - ISSUER_ENDPOINT
@@ -157,7 +162,7 @@ services:
   song-db:
     image: mongo:6.0.6
     container_name: song-mongodb
-    restart: always
+    restart: on-failure
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
@@ -169,7 +174,7 @@ services:
   localstack:
     image: localstack/localstack:2.1.0
     container_name: localstack
-    restart: always
+    restart: on-failure
     environment:
       - AWS_DEFAULT_REGION=eu-west-1
       - EDGE_PORT=4566
